@@ -15,25 +15,25 @@ import javafx.scene.paint.Color;
 public class PokemonButton extends Button {
 
     /** the four types of pokemon we have */
-        private enum Pokemon {
+        public enum Pokemon {
             BULBASAUR,
-            CHARMANDER,
+            GOLEM,
             PIKACHU,
             SNORLAX
         }
 
         /** bulbasaur image */
         private Image bulbasaur = new Image(getClass().getResourceAsStream(
-                "bulbasaur.png"));
+                "images/bulbasaur.png"));
         /** charmander image */
-        private Image charmander = new Image(getClass().getResourceAsStream(
-                "charmander.png"));
+        private Image golem = new Image(getClass().getResourceAsStream(
+                "images/golem.png"));
         /** pikachu image */
         private Image pikachu = new Image(getClass().getResourceAsStream(
-                "pikachu.png"));
+                "images/pikachu.png"));
         /** snorlax image */
         private Image snorlax = new Image(getClass().getResourceAsStream(
-                "snorlax.png"));
+                "images/snorlak.png"));
 
         /** a definition of white for the button background */
         private static final Background WHITE =
@@ -42,38 +42,18 @@ public class PokemonButton extends Button {
         /** the type of this pokemon */
         private Pokemon pokemon;
 
+        private Image pokeball = new Image(getClass().getResourceAsStream(
+            "images/pokeball.png"));
+
 
         public PokemonButton() {
             this.pokemon = pokemon;
-    }
-        /**
-         * Create the button with the image based on the pokemon.
-         *
-         * @param pokemon the pokemon
-         */
-        public PokemonButton(Pokemon pokemon) {
-            this.pokemon = pokemon;
-            Image image;
-            switch (pokemon) {
-                case BULBASAUR:
-                    image = bulbasaur;
-                    break;
-                case CHARMANDER:
-                    image = charmander;
-                    break;
-                case PIKACHU:
-                    image = pikachu;
-                    break;
-                case SNORLAX:
-                default:
-                    image = snorlax;
-            }
+            Image image = pokeball;
 
             // set the graphic on the button and make the background white
             this.setGraphic(new ImageView(image));
             this.setBackground(WHITE);
-        }
-
+            }
         /**
          * Get the pokemon type.
          *
@@ -83,4 +63,3 @@ public class PokemonButton extends Button {
             return this.pokemon;
         }
 }
-    

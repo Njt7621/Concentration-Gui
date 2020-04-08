@@ -33,24 +33,18 @@ public class ConcentrationGUI extends Application implements Observer<Concentrat
     /** the font size of the label */
     private final static int LABEL_FONT_SIZE = 40;
     /** the four types of pokemon we have */
-    private enum Pokemon {
-        BULBASAUR,
-        CHARMANDER,
-        PIKACHU,
-        SNORLAX
-    }
+
 
     /** number of columns */
-    private final static int COLS = 2;
+    private int COLS;
     /** number of rows */
-    private final static int ROWS = 2;
+    private int ROWS;
     /** 2d array of PokemonButton*/
     private PokemonButton[][] board;
 
     @Override
     public void init() throws ConcentrationException {
         List<String> args = getParameters().getRaw();
-        this.board = new PokemonButton[ROWS][COLS];
         try{
             // get host and port from command line
             String host = args.get(0);
@@ -59,9 +53,12 @@ public class ConcentrationGUI extends Application implements Observer<Concentrat
             // create the model, and add ourselves as an observer
             this.model = new ConcentrationModel();
             this.model.addObserver(this);
-
             // initiate the controller
             this.controller = new ConcentrationController(host, port, this.model);
+            ROWS = this.model.getDIM();
+            COLS = this.model.getDIM();
+            this.board = new PokemonButton[ROWS][COLS];
+
         } catch (ConcentrationException |
             ArrayIndexOutOfBoundsException |
             NumberFormatException e) {
@@ -77,7 +74,7 @@ public class ConcentrationGUI extends Application implements Observer<Concentrat
     private GridPane makeGridPane(){
         GridPane gridPane = new GridPane();
 
-        Pokemon pokemon[] = Pokemon.values();
+        PokemonButton.Pokemon pokemon[] = PokemonButton.Pokemon.values();
         int i = 0;
         for (int row=0; row<ROWS; ++row) {
             for (int col=0; col<COLS; ++col) {
