@@ -8,9 +8,11 @@ import javafx.scene.layout.BackgroundFill;
 import javafx.scene.paint.Color;
 
 /**
- * 
+ A JavaFX GUI client for the network concentration game.  It represent the "View"
+ * component of the MVC architecture in use here.
  *
  * @author RIT CS
+ * @author Nikkia Theodule njt7621@g.rit.edu
  */
 public class PokemonButton extends Button {
 

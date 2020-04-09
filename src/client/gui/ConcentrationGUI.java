@@ -6,11 +6,12 @@ import client.model.Observer;
 
 import common.ConcentrationException;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
@@ -32,15 +33,16 @@ public class ConcentrationGUI extends Application implements Observer<Concentrat
     private Label label;
     /** the font size of the label */
     private final static int LABEL_FONT_SIZE = 40;
-    /** the four types of pokemon we have */
-
-
     /** number of columns */
     private int COLS;
     /** number of rows */
     private int ROWS;
     /** 2d array of PokemonButton*/
     private PokemonButton[][] board;
+
+    private Label moves;
+    private Label matches;
+    private Label status;
 
     @Override
     public void init() throws ConcentrationException {
@@ -90,27 +92,42 @@ public class ConcentrationGUI extends Application implements Observer<Concentrat
                 // JavaFX uses (x, y) pixel coordinates instead of
                 // (row, col), so must invert when adding
                 gridPane.add(button, col, row);
-                board[col][row] = button;
+                board[row][col] = button;
             }
         }
 
         return gridPane;
     }
 
+    /**
+     * A helper function that builds a flow pane at the bottom with
+     * 3 labels of buttons to return.
+     *
+     * @return the grid pane
+     */
+    private FlowPane makeFlowPane(Label){
+        FlowPane FlowPane = new FlowPane();
+        }
+
     @Override
     public void start(Stage stage) throws Exception {
         // create the border pane that holds the grid and label
         BorderPane borderPane = new BorderPane();
 
-        // create the label that the buttons will update when pressed
+        // create the label that will update
         this.label = new Label("UNKNOWN");
         this.label.setStyle("-fx-font: " + LABEL_FONT_SIZE + " arial;");
-        borderPane.setTop(this.label);
+        borderPane.setBottom(this.label);
         BorderPane.setAlignment(this.label, Pos.CENTER);
+
+
 
         // get the grid pane from the helper method
         GridPane gridPane = makeGridPane();
+        //get the flowpane from the helper method
+        FlowPane flowPane = makeFlowPane();
         borderPane.setCenter(gridPane);
+        borderPane.setBottom(flowPane);
 
         // store the grid into the scene and display it
         Scene scene = new Scene(borderPane);
@@ -123,12 +140,24 @@ public class ConcentrationGUI extends Application implements Observer<Concentrat
 
     @Override
     public void update(ConcentrationModel model, ConcentrationModel.CardUpdate card) {
-        // TODO
+        Platform.runLater(() -> refresh(card));
+        Platform.runLater(() -> this.moves.setText("Moves: " + this.model.getNumMoves()));
+        if (card = null){
+            Platform.runLater(() -> this.matches.setText("Matches: " + this.model.getNumMatches()));
+        }
+        Platform.runLater(() -> refresh(status)); //status of game
     }
+
+    private void refresh(ConcentrationModel.CardUpdate card) {
+        int col = card.getCol();
+        int row = card.getRow();
+        board[row][col] = null; //Add method to pokemon button class to show or hide
+
+    }
+
 
     @Override
     public void stop() {
-        // close the socket before it exits
     }
 
     public static void main(String[] args) {
